@@ -1,0 +1,45 @@
+{% extends 'app/base.html' %}
+
+{% block page %}Home{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        {% if images %}
+
+            {% for image in images %}
+                <div class="col-sm-4">
+                    <div class="card m-2">
+                        <a href="{{ image.image.url }}" title="{{ image.title }}">
+                        <img src="{{ image.image.url }}" class="card-img-top" alt="{{ image.title }}" height="250px">
+                        </a>
+
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">{{ image.title | title }}</h5>
+                            <p class="text-muted"><i class="bi bi-tag-fill"></i> &nbsp;{{ image.tags }}</p>
+
+                            <div class="border-bottom mb-2">
+                                <div class="row d-flex justify-content-between mb-2">
+                                        <span>By <a class="text-dark text-decoration-none fw-bold">{{ image.user | title }}</a></span>
+                                        <span><small>{{ image.created_on }}</small></span>
+                                </div>
+                            </div>
+
+
+                            {% if request.user.id == image.user.id %}
+                                <a href="{% url 'delete' image.id %}" class="mt-2 btn btn-outline-danger btn-sm">Delete <i class="bi bi-trash3-fill"></i></a>
+                            {% else %}
+                                <a href="{{ image.image.url }}" class="mt-2 btn btn-outline-secondary btn-sm" download>Download <i class="bi bi-box-arrow-down"></i></a>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+    
+        {% else %}
+            <p class="text-center fw-bold">Image Not Found!</p>
+        {% endif %}
+    </div> 
+
+{% endblock %}
